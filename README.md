@@ -31,8 +31,11 @@ infra/bootstrap/  Terraform, applied once: state bucket + GitHub OIDC deploy rol
    ```sh
    cd infra/bootstrap
    terraform init
-   terraform apply -var github_repo=<owner>/<repo> -var region=us-east-1
+   terraform apply -var github_repo=<owner>/<repo> \
+     -var github_owner_id=<owner id> -var github_repo_id=<repo id>
    ```
+   Get the two IDs with `curl -s https://api.github.com/repos/<owner>/<repo>`: they're `owner.id` and `id`. They're needed because GitHub's OIDC tokens can identify the repo as `repo:owner@<owner_id>/repo@<repo_id>:ref:...`, and the deploy role must trust that form too.
+
    The bootstrap keeps its own state locally (`infra/bootstrap/terraform.tfstate`, which is gitignored), so keep that file safe.
 
 2. **Configure GitHub.** In *Settings → Secrets and variables → Actions*, add:
