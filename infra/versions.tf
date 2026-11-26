@@ -12,8 +12,12 @@ terraform {
     }
   }
 
-  # bucket, key and region are supplied via -backend-config in CI.
+  # Backend blocks can't use variables. The bucket name is account-specific, so pass it at init:
+  #   terraform init -backend-config="bucket=<state_bucket output of infra/bootstrap>"
+  # CI also passes key and region with -backend-config, which override the values below.
   backend "s3" {
+    key          = "apex-legends-map-bot/terraform.tfstate"
+    region       = "us-east-1"
     use_lockfile = true
     encrypt      = true
   }

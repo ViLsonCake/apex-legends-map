@@ -51,3 +51,13 @@ python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
 pytest
 ```
+
+To run Terraform for the main stack locally, pass the state bucket at init:
+
+```sh
+cd infra
+terraform init -backend-config="bucket=$(terraform -chdir=bootstrap output -raw state_bucket)"
+terraform plan   # asks for the secret variables, or set TF_VAR_telegram_bot_token etc.
+```
+
+If you just want to check the configuration without touching the state, run `terraform init -backend=false && terraform validate`.
