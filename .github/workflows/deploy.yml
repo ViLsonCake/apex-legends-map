@@ -22,8 +22,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
       TF_IN_AUTOMATION: "true"
-      TF_VAR_region: ${{ vars.AWS_REGION }}
+      TF_VAR_region: ${{ vars.AWS_REGION || 'us-east-1' }}
       TF_VAR_telegram_bot_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TF_VAR_apex_api_key: ${{ secrets.APEX_API_KEY }}
       TF_VAR_telegram_webhook_secret: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
@@ -42,7 +43,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
@@ -55,7 +56,7 @@ jobs:
           terraform init -input=false
           -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}"
           -backend-config="key=apex-legends-map-bot/terraform.tfstate"
-          -backend-config="region=${{ vars.AWS_REGION }}"
+          -backend-config="region=${{ env.AWS_REGION }}"
 
       - name: Terraform apply
         working-directory: infra

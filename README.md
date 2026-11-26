@@ -31,12 +31,12 @@ infra/bootstrap/  Terraform, applied once: state bucket + GitHub OIDC deploy rol
    ```sh
    cd infra/bootstrap
    terraform init
-   terraform apply -var github_repo=<owner>/<repo> -var region=eu-central-1
+   terraform apply -var github_repo=<owner>/<repo> -var region=us-east-1
    ```
    The bootstrap keeps its own state locally (`infra/bootstrap/terraform.tfstate`, which is gitignored), so keep that file safe.
 
 2. **Configure GitHub.** In *Settings → Secrets and variables → Actions*, add:
-   - Variables: `AWS_ROLE_ARN`, `TF_STATE_BUCKET` and `AWS_REGION`, taken from the bootstrap outputs.
+   - Variables: `AWS_ROLE_ARN`, `TF_STATE_BUCKET` and `AWS_REGION`, taken from the bootstrap outputs. `AWS_REGION` is optional and defaults to `us-east-1`.
    - Secrets:
      - `TELEGRAM_BOT_TOKEN`: from @BotFather
      - `APEX_API_KEY`: from apexlegendsapi.com
