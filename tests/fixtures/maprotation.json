@@ -1,0 +1,18 @@
+{
+    "battle_royale": {
+        "current": {"start": 1795656600, "end": 1795662000, "readableDate_start": "2026-11-26 01:30:00", "readableDate_end": "2026-11-26 03:00:00", "map": "Broken Moon", "code": "broken_moon_rotation", "DurationInSecs": 5400, "DurationInMinutes": 90, "asset": "https://apexlegendsstatus.com/assets/maps/Broken_Moon.png", "remainingSecs": 1791, "remainingMins": 30, "remainingTimer": "00:29:51"},
+        "next": {"start": 1795662000, "end": 1795667400, "readableDate_start": "2026-11-26 03:00:00", "readableDate_end": "2026-11-26 04:30:00", "map": "Storm Point", "code": "storm_point_rotation", "DurationInSecs": 5400, "DurationInMinutes": 90, "asset": "https://apexlegendsstatus.com/assets/maps/Storm_Point.png"}
+    },
+    "ranked": {
+        "current": {"start": 1795645800, "end": 1795662000, "readableDate_start": "2026-11-25 22:30:00", "readableDate_end": "2026-11-26 03:00:00", "map": "E-District", "code": "edistrict_rotation", "DurationInSecs": 16200, "DurationInMinutes": 270, "asset": "https://apexlegendsstatus.com/assets/maps/E-District.png", "remainingSecs": 1791, "remainingMins": 30, "remainingTimer": "00:29:51"},
+        "next": {"start": 1795662000, "end": 1795678200, "readableDate_start": "2026-11-26 03:00:00", "readableDate_end": "2026-11-26 07:30:00", "map": "Broken Moon", "code": "broken_moon_rotation", "DurationInSecs": 16200, "DurationInMinutes": 270, "asset": "https://apexlegendsstatus.com/assets/maps/Broken_Moon.png"}
+    },
+    "ltm": {
+        "current": {"start": 1795660200, "end": 1795661100, "readableDate_start": "2026-11-26 02:30:00", "readableDate_end": "2026-11-26 02:45:00", "map": "Barometer", "code": "control_barometer", "DurationInSecs": 900, "DurationInMinutes": 15, "isActive": true, "eventName": "Control", "asset": "https://apexlegendsstatus.com/assets/maps/Storm_Point.png", "remainingSecs": 891, "remainingMins": 15, "remainingTimer": "00:14:51"},
+        "next": {"start": 1795661100, "end": 1795662000, "readableDate_start": "2026-11-26 02:45:00", "readableDate_end": "2026-11-26 03:00:00", "map": "Wattson's Pylon", "code": "freedm_gungame_wattson", "DurationInSecs": 900, "DurationInMinutes": 15, "isActive": true, "eventName": "Gun Run", "asset": "https://apexlegendsstatus.com/assets/maps/Storm_Point.png"}
+    },
+    "wildcard": {
+        "current": {"start": 1794333600, "end": 1796148000, "readableDate_start": "2026-11-10 18:00:00", "readableDate_end": "2026-12-01 18:00:00", "map": "Storm Point", "code": "storm_point_rotation", "DurationInSecs": 1814400, "DurationInMinutes": 30240, "eventName": "Godzilla Attacks", "asset": "https://apexlegendsstatus.com/assets/maps/Storm_Point.png", "remainingSecs": 487791, "remainingMins": 8130, "remainingTimer": "135:29:51"},
+        "next": {"start": 1796148000, "end": 1796153400, "readableDate_start": "2026-12-01 18:00:00", "readableDate_end": "2026-12-01 19:30:00", "map": "Olympus", "code": "olympus_rotation", "DurationInSecs": 5400, "DurationInMinutes": 90, "eventName": "Wildcard", "asset": "https://apexlegendsstatus.com/assets/maps/Olympus.png"}
+    }
+}

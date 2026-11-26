@@ -1,0 +1,25 @@
+{
+  "commands": {
+    "start": "What this bot does",
+    "pubs": "Current Battle Royale (pubs) map",
+    "ranked": "Current Ranked map",
+    "wildcard": "Current Wildcard map or event",
+    "mixtape": "Current Mixtape mode and map"
+  },
+  "messages": {
+    "start": "<b>Apex Legends Map Rotation Bot</b>\n\nI tell you which maps are live in Apex Legends right now, when they change and what comes next.\n\n/pubs — Battle Royale (pubs) map\n/ranked — Ranked map\n/wildcard — Wildcard map or current event\n/mixtape — Mixtape mode and map",
+    "pubs": "<b>Battle Royale</b>\n\nCurrent map: <b>{map}</b>\nChanges in: <b>{remaining}</b> (at {ends_at})\n\nNext: <b>{next_map}</b> for {next_duration}",
+    "ranked": "<b>Ranked</b>\n\nCurrent map: <b>{map}</b>\nChanges in: <b>{remaining}</b> (at {ends_at})\n\nNext: <b>{next_map}</b> for {next_duration}",
+    "wildcard": "<b>Wildcard</b>\n\nCurrent map: <b>{map}</b>\nChanges in: <b>{remaining}</b> (at {ends_at})\n\nNext: <b>{next_map}</b> for {next_duration}",
+    "wildcard_event": "<b>Wildcard</b>\n\nEvent: <b>{event_name}</b>\nMap: <b>{map}</b>\nEvent ends in: <b>{remaining}</b> (at {ends_at})\n\nNext: <b>{next_event_name}</b> on <b>{next_map}</b> for {next_duration}",
+    "mixtape": "🎵 <b>Mixtape</b>\n\nMode: <b>{event_name}</b>\nMap: <b>{map}</b>\nChanges in: <b>{remaining}</b> (at {ends_at})\n\nNext: <b>{next_event_name}</b> on <b>{next_map}</b> for {next_duration}",
+    "unknown_command": "I don't know that command. Send /start to see what I can do.",
+    "api_error": "Couldn't get the map rotation right now. Please try again in a minute."
+  },
+  "formats": {
+    "datetime": "%H:%M UTC, %b %d",
+    "duration_hours_minutes": "{hours}h {minutes:02d}m",
+    "duration_hours": "{hours}h",
+    "duration_minutes": "{minutes}m"
+  }
+}
