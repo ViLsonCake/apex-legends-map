@@ -25,6 +25,18 @@ variable "github_repo" {
   type        = string
 }
 
+variable "github_owner_id" {
+  description = "Numeric GitHub owner ID (curl -s https://api.github.com/repos/<owner>/<repo> | jq .owner.id)"
+  type        = string
+  default     = null
+}
+
+variable "github_repo_id" {
+  description = "Numeric GitHub repository ID (curl -s https://api.github.com/repos/<owner>/<repo> | jq .id)"
+  type        = string
+  default     = null
+}
+
 variable "project" {
   type    = string
   default = "apex-legends-map-bot"
@@ -35,6 +47,18 @@ data "aws_caller_identity" "current" {}
 locals {
   account_id   = data.aws_caller_identity.current.account_id
   state_bucket = "${var.project}-tfstate-${local.account_id}"
+
+  # GitHub OIDC tokens may use either sub format:
+  #   repo:owner/repo:ref:refs/heads/main
+  #   repo:owner@<owner_id>/repo@<repo_id>:ref:refs/heads/main   (immutable IDs)
+  github_owner = split("/", var.github_repo)[0]
+  github_name  = split("/", var.github_repo)[1]
+  trusted_subs = compact([
+    "repo:${var.github_repo}:ref:refs/heads/main",
+    var.github_owner_id != null && var.github_repo_id != null
+    ? "repo:${local.github_owner}@${var.github_owner_id}/${local.github_name}@${var.github_repo_id}:ref:refs/heads/main"
+    : "",
+  ])
 }
 
 # --- Terraform state bucket ---
@@ -89,7 +113,7 @@ data "aws_iam_policy_document" "trust" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_repo}:ref:refs/heads/main"]
+      values   = local.trusted_subs
     }
   }
 }
