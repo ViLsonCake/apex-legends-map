@@ -52,12 +52,16 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
-To run Terraform for the main stack locally, pass the state bucket at init:
+To run Terraform for the main stack locally, apply `infra/bootstrap` first (setup step 1), then pass the state bucket at init:
 
 ```sh
 cd infra
-terraform init -backend-config="bucket=$(terraform -chdir=bootstrap output -raw state_bucket)"
+BUCKET=$(terraform -chdir=bootstrap output -raw state_bucket 2>/dev/null)
+[[ "$BUCKET" == apex-legends-map-bot-tfstate-* ]] || echo "No bootstrap state found: apply infra/bootstrap first"
+terraform init -reconfigure -backend-config="bucket=$BUCKET"
 terraform plan   # asks for the secret variables, or set TF_VAR_telegram_bot_token etc.
 ```
+
+The bucket name is `apex-legends-map-bot-tfstate-<your AWS account ID>`, so you can also type it in directly.
 
 If you just want to check the configuration without touching the state, run `terraform init -backend=false && terraform validate`.
