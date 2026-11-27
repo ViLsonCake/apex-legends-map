@@ -17,8 +17,8 @@ def sent(monkeypatch, rotation):
     return calls
 
 
-def _event(text, secret="s3cret", b64=False):
-    body = json.dumps({"update_id": 1, "message": {"chat": {"id": 42}, "text": text}})
+def _event(text, secret="s3cret", b64=False, chat_type="private"):
+    body = json.dumps({"update_id": 1, "message": {"chat": {"id": 42, "type": chat_type}, "text": text}})
     if b64:
         body = base64.b64encode(body.encode()).decode()
     return {"headers": {"x-telegram-bot-api-secret-token": secret}, "body": body, "isBase64Encoded": b64}
@@ -34,6 +34,15 @@ def test_ranked_sends_photo(sent):
     kind, chat_id, photo, caption = sent[0]
     assert (kind, chat_id) == ("photo", 42)
     assert "E-District" in caption
+
+
+@pytest.mark.parametrize("chat_type", ["group", "supergroup"])
+def test_group_chats_get_text_only(sent, chat_type):
+    handler.lambda_handler(_event("/ranked@MyBot", chat_type=chat_type), None)
+    assert len(sent) == 1
+    kind, chat_id, text = sent[0]
+    assert (kind, chat_id) == ("message", 42)
+    assert "E-District" in text
 
 
 def test_start_sends_message(sent):

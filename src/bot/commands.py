@@ -4,7 +4,7 @@ from html import escape
 
 import apex_client
 import templates
-from formatting import format_minutes, format_utc
+from formatting import format_long_duration
 
 DEFAULT_WILDCARD_EVENT = "wildcard"
 
@@ -20,16 +20,15 @@ def _rotation_context(mode: dict) -> dict:
     return {
         "map": escape(current["map"]),
         "remaining": escape(current["remainingTimer"]),
-        "ends_at": format_utc(current["end"]),
         "next_map": escape(nxt["map"]),
-        "next_duration": format_minutes(nxt["DurationInMinutes"]),
         "event_name": escape(current.get("eventName", "")),
         "next_event_name": escape(nxt.get("eventName", "")),
     }
 
 
-def _mode_reply(template_key: str, mode: dict) -> Reply:
-    return Reply(templates.render(template_key, **_rotation_context(mode)), mode["current"].get("asset"))
+def _mode_reply(template_key: str, mode: dict, **overrides) -> Reply:
+    context = {**_rotation_context(mode), **overrides}
+    return Reply(templates.render(template_key, **context), mode["current"].get("asset"))
 
 
 def start(_rotation=None) -> Reply:
@@ -52,7 +51,12 @@ def wildcard(rotation: dict) -> Reply:
     mode = rotation["wildcard"]
     event_name = mode["current"].get("eventName")
     is_event = bool(event_name) and event_name.strip().lower() != DEFAULT_WILDCARD_EVENT
-    return _mode_reply("wildcard_event" if is_event else "wildcard", mode)
+    if is_event:
+        # The API's "next" after an event is unreliable, so the event template doesn't show it.
+        return _mode_reply(
+            "wildcard_event", mode, remaining=format_long_duration(mode["current"]["remainingSecs"])
+        )
+    return _mode_reply("wildcard", mode)
 
 
 # command -> (builder, needs rotation data)
