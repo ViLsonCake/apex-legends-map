@@ -28,8 +28,8 @@ def _parse_body(event: dict) -> dict:
     return json.loads(body)
 
 
-def send_reply(chat_id: int, reply) -> None:
-    if reply.photo_url:
+def send_reply(chat_id: int, reply, with_photo: bool = True) -> None:
+    if with_photo and reply.photo_url:
         try:
             telegram_client.send_photo(chat_id, reply.photo_url, reply.text)
             return
@@ -49,12 +49,14 @@ def lambda_handler(event, context):
 
     message = update.get("message") or {}
     command = parse_command(message.get("text"))
-    chat_id = (message.get("chat") or {}).get("id")
+    chat = message.get("chat") or {}
+    chat_id = chat.get("id")
     if command is None or chat_id is None:
         return _response(200)
 
     try:
-        send_reply(chat_id, build_reply(command))
+        # Images only in private chats, so group media doesn't fill up with the same pictures.
+        send_reply(chat_id, build_reply(command), with_photo=chat.get("type") == "private")
     except telegram_client.TelegramError as exc:
         print(f"ERROR replying to /{command}: {exc}")
     # Always 200 so Telegram does not retry the update.

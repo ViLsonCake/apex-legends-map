@@ -1,12 +1,20 @@
-from formatting import format_minutes, format_utc
+import pytest
+
+from formatting import format_long_duration
 
 
-def test_format_utc():
-    assert format_utc(1795662000) == "03:00 UTC, Nov 26"
-
-
-def test_format_minutes():
-    assert format_minutes(90) == "1h 30m"
-    assert format_minutes(270) == "4h 30m"
-    assert format_minutes(15) == "15m"
-    assert format_minutes(120) == "2h"
+@pytest.mark.parametrize(
+    "seconds, expected",
+    [
+        (176672, "2 days 1 hour and 4 minutes"),  # 49:04:32
+        (487791, "5 days 15 hours and 29 minutes"),
+        (3600, "1 hour"),
+        (86400 + 60, "1 day and 1 minute"),
+        (2 * 86400, "2 days"),
+        (90, "1 minute"),
+        (30, "less than a minute"),
+        (0, "less than a minute"),
+    ],
+)
+def test_format_long_duration(seconds, expected):
+    assert format_long_duration(seconds) == expected

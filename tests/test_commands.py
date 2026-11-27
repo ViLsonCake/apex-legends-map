@@ -28,39 +28,39 @@ def test_start():
 
 def test_ranked(api):
     reply = commands.build_reply("ranked")
-    assert "E-District" in reply.text
-    assert "00:29:51" in reply.text
-    assert "03:00 UTC, Nov 26" in reply.text
-    assert "Broken Moon" in reply.text and "4h 30m" in reply.text
+    assert reply.text == (
+        "<b>Ranked</b>\n\nCurrent map: <b>E-District</b>\n\n"
+        "Changes to <b>Broken Moon</b> in: <i>00:29:51</i>"
+    )
     assert reply.photo_url == "https://apexlegendsstatus.com/assets/maps/E-District.png"
 
 
 def test_pubs(api):
     reply = commands.build_reply("pubs")
-    assert "Broken Moon" in reply.text and "Storm Point" in reply.text
-    assert "00:29:51" in reply.text and "1h 30m" in reply.text
+    assert "Current map: <b>Broken Moon</b>" in reply.text
+    assert "Changes to <b>Storm Point</b> in: <i>00:29:51</i>" in reply.text
 
 
 def test_mixtape(api):
     reply = commands.build_reply("mixtape")
-    assert "Control" in reply.text and "Barometer" in reply.text
-    assert "Gun Run" in reply.text and "Wattson&#x27;s Pylon" in reply.text
-    assert "00:14:51" in reply.text
+    assert "Mode: <b>Control</b>" in reply.text and "Map: <b>Barometer</b>" in reply.text
+    assert "Changes to <b>Gun Run</b> on <b>Wattson&#x27;s Pylon</b> in: <i>00:14:51</i>" in reply.text
 
 
 def test_wildcard_event(api):
     reply = commands.build_reply("wildcard")
-    assert reply.text == templates.render("wildcard_event", **commands._rotation_context(api["wildcard"]))
-    assert "Godzilla Attacks" in reply.text
-    assert "Storm Point" in reply.text
-    assert "135:29:51" in reply.text
-    assert "Olympus" in reply.text
+    assert "Event: <b>Godzilla Attacks</b>" in reply.text
+    assert "Map: <b>Storm Point</b>" in reply.text
+    assert "<i>5 days 15 hours and 29 minutes</i>" in reply.text
+    assert "135:29:51" not in reply.text
+    assert "Olympus" not in reply.text
 
 
 def test_wildcard_regular(api):
     api["wildcard"]["current"]["eventName"] = "Wildcard"
     reply = commands.build_reply("wildcard")
     assert "Godzilla" not in reply.text
+    assert "Changes to <b>Olympus</b> in: <i>135:29:51</i>" in reply.text
     assert reply.text == templates.render("wildcard", **commands._rotation_context(api["wildcard"]))
 
 
